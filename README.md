@@ -1,6 +1,25 @@
 # Distribution
+[![Build Status](https://github.com/distribution/distribution/workflows/CI/badge.svg?branch=main&event=push)](https://github.com/distribution/distribution/actions?query=workflow%3ACI)
+[![GoDoc](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/distribution/distribution)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![codecov](https://codecov.io/gh/distribution/distribution/branch/main/graph/badge.svg)](https://codecov.io/gh/distribution/distribution)
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B162%2Fgithub.com%2Fdistribution%2Fdistribution.svg?type=shield)](https://app.fossa.com/projects/custom%2B162%2Fgithub.com%2Fdistribution%2Fdistribution?ref=badge_shield)
+[![OCI Conformance](https://github.com/distribution/distribution/workflows/conformance/badge.svg)](https://github.com/distribution/distribution/actions?query=workflow%3Aconformance)
+![image](https://user-images.githubusercontent.com/48161833/128683174-fb890af4-2661-41ef-a934-26415fa61abd.png)
+Storage Driver Arcitecture
 
-The toolset to pack, ship, store, and deliver content.
+#### The toolset to pack, ship, store, and deliver content.
+### Connecting with IPFS
+**File writing process**
+- Writer() receives incoming file as []byte
+- Write to disk and after file.close(), add and pin file to IPFS using go-ipfs
+- On successful pinning, add hash and file name to database (sqlite)
+
+**File reading**  
+- Check if file exist on disk
+- If not, check if it’s present in the list of added files in database
+- If found, retrieve from IPFS and return the filereader to that file
+- Else return file not found error
 
 This repository's main product is the Open Source Registry implementation
 for storing and distributing container images using the
@@ -12,13 +31,6 @@ GitLab Container Registry and DigitalOcean Container Registry, as well as the CN
 Project, and VMware Harbor Registry.
 
 <img src="/distribution-logo.svg" width="200px" />
-
-[![Build Status](https://github.com/distribution/distribution/workflows/CI/badge.svg?branch=main&event=push)](https://github.com/distribution/distribution/actions?query=workflow%3ACI)
-[![GoDoc](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/distribution/distribution)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
-[![codecov](https://codecov.io/gh/distribution/distribution/branch/main/graph/badge.svg)](https://codecov.io/gh/distribution/distribution)
-[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B162%2Fgithub.com%2Fdistribution%2Fdistribution.svg?type=shield)](https://app.fossa.com/projects/custom%2B162%2Fgithub.com%2Fdistribution%2Fdistribution?ref=badge_shield)
-[![OCI Conformance](https://github.com/distribution/distribution/workflows/conformance/badge.svg)](https://github.com/distribution/distribution/actions?query=workflow%3Aconformance)
 
 This repository contains the following components:
 
